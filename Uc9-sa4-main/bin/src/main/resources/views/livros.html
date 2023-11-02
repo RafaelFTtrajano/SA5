@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Livros cadastrados</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+
+	<style>
+		.custom-bg {
+			height: 100vh;
+			width: 100%;
+			background-image: linear-gradient(45deg, rgb(0, 128, 192),
+					rgb(128, 255, 255));
+		}
+
+		.centered-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+		}
+
+		.form-container {
+			margin: 20px;
+			padding: 20px;
+			background-color: white;
+			border-radius: 10px;
+			max-width: 1600px;
+			max-height: 700px;
+			width: 1600px;
+			height: 700px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+			overflow-y: auto;
+		}
+
+		.cell-black {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body class="custom-bg">
+	<div class="container-fluid centered-container">
+		<div class="row justify-content-center">
+			<div class="col-md-6 form-container">
+				<h2>Livros cadastrados</h2>
+				<br>
+				<a href="/" class="btn btn-primary me-2">Início</a>
+				<a href="/livros/adicionar" class="btn btn-success">Adicionar livros</a>
+				<br>
+				<br>
+				<div class="table-container" style="max-height: 500px; overflow-y: auto;">
+					<table class="table table-responsive table-hover">
+						<thead>
+							<tr class="table-primary table-active text-white text-center">
+								<th class="cell-black">ID</th>
+								<th class="cell-black">Título</th>
+								<th class="cell-black">Autor</th>
+								<th class="cell-black">ISBN</th>
+								<th class="cell-black">Editora</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="livro:${livro}">
+								<td th:text=${livro.id} class="text-center cell-black">ID</td>
+								<td th:text=${livro.titulo} class="cell-black">Título</td>
+								<td th:text=${livro.autor} class="cell-black">Autor</td>
+								<td th:text=${livro.isbn} class="cell-black">ISBN</td>
+								<td th:text=${livro.editora} class="cell-black">Editora</td>
+								<td class="d-flex">
+									<a th:href="@{livro/editar/{id}(id=${livro.id})}"
+										class="btn btn-warning me-2">Editar</a>
+									<a th:href="@{livro/{id}(id=${livro.id})}"
+										class="btn btn-danger me-2 apagar-btn">Apagar</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+	<script>
+		function confirmarExclusao(event) {
+			if (confirm("Tem certeza de que deseja apagar este livro?")) {
+				window.location.href = event.target.getAttribute("href");
+			}
+		}
+
+		const botoesApagar = document.querySelectorAll(".apagar-btn");
+		botoesApagar.forEach(function (botao) {
+			botao.addEventListener("click", function (event) {
+				event.preventDefault();
+				confirmarExclusao(event);
+			});
+		});
+	</script>
+</body>
+
+</html>
